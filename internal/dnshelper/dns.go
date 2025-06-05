@@ -308,7 +308,14 @@ func unmarshallRecord(ctx context.Context, input []byte) (*Record, error) {
 		return nil, fmt.Errorf("empty json document")
 	}
 
-	err = json.Unmarshal(input, &records)
+	startIdx := bytes.IndexAny(t, "[{")
+	if startIdx == -1 {
+	return nil, fmt.Errorf("no JSON object found in input")
+	}
+
+	jsonStart := t[startIdx:]
+
+	err = json.Unmarshal(jsonStart, &records)
 	if err != nil {
 		tflog.Debug(ctx, fmt.Sprintf("Failed to unmarshall an DNSRecord json document with error %q, document was %s", err, string(input)))
 		return nil, fmt.Errorf("failed while unmarshalling DNSRecord json document: %s", err)
