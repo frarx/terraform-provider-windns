@@ -310,7 +310,7 @@ func unmarshallRecord(ctx context.Context, input []byte) (*Record, error) {
 
 	startIdx := bytes.IndexAny(t, "[{")
 	if startIdx == -1 {
-	return nil, fmt.Errorf("no JSON object found in input")
+		return nil, fmt.Errorf("no JSON object found in input")
 	}
 
 	jsonStart := t[startIdx:]
